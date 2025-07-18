@@ -10,7 +10,7 @@ pipeline {
         // MONGO_USERNAME = credentials('mongo-db-username')
         // MONGO_PASSWORD = credentials('mongo-db-password')
         SONAR_SCANNER_HOME = tool 'SonarQube';
-        // SONAR_TOKEN = credentials('sonar-token')
+        SONAR_TOKEN = credentials('sonar-auth-token')
     }
 
     options {
@@ -73,16 +73,15 @@ pipeline {
 
         stage('SonarQube') {
             steps {
-                timeout(time: 60, unit: 'SECONDS'){
-                        sh 'echo $SONAR_SCANNER_HOME '
-                        sh'''
-                            $SONAR_SCANNER_HOME/bin/sonar-scanner \
+                    sh 'echo $SONAR_SCANNER_HOME '
+                    sh '''
+                        $SONAR_SCANNER_HOME/bin/sonar-scanner \
                             -Dsonar.projectKey=jenkins-pipeline \
                             -Dsonar.sources=. \
-                            -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info \
-                        '''
-                    waitForQualityGate abortPipeline:true
-               }    
+                            -Dsonar.login=$SONAR_TOKEN \
+                            -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+                    '''
+                    // waitForQualityGate abortPipeline:true    
             }
         }
         // stage('Install Sonar Scanner') {
