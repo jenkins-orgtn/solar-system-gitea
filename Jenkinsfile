@@ -5,10 +5,11 @@ pipeline {
         nodejs 'nodejs-24-1-0'
     }
     environment {
-        MONGO_URI = "mongodb+srv://supercluster.d83jj.mongodb.net/superData"
+        // MONGO_URI = "mongodb+srv://supercluster.d83jj.mongodb.net/superData"
         // MONGO_DB_CREDS = credentials('mongo-db-creds')
-        MONGO_USERNAME = credentials('mongo-db-username')
-        MONGO_PASSWORD = credentials('mongo-db-password')
+        // MONGO_USERNAME = credentials('mongo-db-username')
+        // MONGO_PASSWORD = credentials('mongo-db-password')
+        SONAR_SCANNER_HOME = tool 'SonarQube';
         // SONAR_TOKEN = credentials('sonar-token')
     }
 
@@ -70,6 +71,20 @@ pipeline {
             }
         }
 
+        stage('SonarQube') {
+            steps {
+                timeout(time: 60, unit: 'SECONDS'){
+                        sh 'echo $SONAR_SCANNER_HOME '
+                        sh'''
+                            $SONAR_SCANNER_HOME/bin/sonar-scanner \
+                            -Dsonar.projectKey=jenkins-pipeline \
+                            -Dsonar.sources=. \
+                            -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info \
+                        '''
+                    waitForQualityGate abortPipeline:true
+               }    
+            }
+        }
         // stage('Install Sonar Scanner') {
         //     steps {
         //         sh 'npm install -g @sonar/scan'
