@@ -1,9 +1,9 @@
 pipeline {
     agent any
 
-    tools {
+   tools {
         nodejs 'nodejs-24-1-0'
-        tool name: 'SonarQube', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+        hudson.plugins.sonar.SonarRunnerInstallation 'SonarQube'
     }
     environment {
         // MONGO_URI = "mongodb+srv://supercluster.d83jj.mongodb.net/superData"
