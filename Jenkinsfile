@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         nodejs 'nodejs-24-1-0'
-        sonarScanner 'SonarQube'
+        hudson.plugins.sonar.SonarRunnerInstallation 'SonarQube'
     }
     environment {
         // MONGO_URI = "mongodb+srv://supercluster.d83jj.mongodb.net/superData"
