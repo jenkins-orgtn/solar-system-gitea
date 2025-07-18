@@ -3,6 +3,7 @@ pipeline {
 
     tools {
         nodejs 'nodejs-24-1-0'
+        sonarScanner 'SonarQube'
     }
     environment {
         // MONGO_URI = "mongodb+srv://supercluster.d83jj.mongodb.net/superData"
@@ -78,6 +79,7 @@ pipeline {
                         $SONAR_SCANNER_HOME/bin/sonar-scanner \
                             -Dsonar.projectKey=jenkins-pipeline \
                             -Dsonar.sources=. \
+                            -Dsonar.host.url=http://20.55.48.167:9000 \
                             -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
                     '''
                     // waitForQualityGate abortPipeline:true    
