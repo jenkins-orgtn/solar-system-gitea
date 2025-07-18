@@ -78,7 +78,6 @@ pipeline {
                         $SONAR_SCANNER_HOME/bin/sonar-scanner \
                             -Dsonar.projectKey=jenkins-pipeline \
                             -Dsonar.sources=. \
-                            -Dsonar.login=$SONAR_TOKEN \
                             -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
                     '''
                     // waitForQualityGate abortPipeline:true    
