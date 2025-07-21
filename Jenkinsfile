@@ -130,6 +130,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Push Docker image') {
+            steps {
+                withDockerRegistry(credentialsId: 'docker-hub-credentials', url: "") {
+                    sh 'docker push -t samarthdoc123/solar-system:$GIT_COMMIT'
+                }
+            }
+        }
     }
 
     post {
