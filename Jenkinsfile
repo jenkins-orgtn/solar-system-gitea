@@ -106,6 +106,7 @@ pipeline {
                         -- quiet \
              
                        --format json -o trivy-image-CRITICAL-results.json
+                '''
             }
             post {
                 always {
