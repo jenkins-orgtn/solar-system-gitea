@@ -6,12 +6,8 @@ pipeline {
         // hudson.plugins.sonar.SonarRunnerInstallation 'SonarQube'
     }
     environment {
-        // MONGO_URI = "mongodb+srv://supercluster.d83jj.mongodb.net/superData"
-        // MONGO_DB_CREDS = credentials('mongo-db-creds')
-        // MONGO_USERNAME = credentials('mongo-db-username')
-        // MONGO_PASSWORD = credentials('mongo-db-password')
-        SONAR_SCANNER_HOME = tool 'sonarqube-scanner-6-10';
-        // SONAR_TOKEN = credentials('sonar-auth-token')
+        SONAR_SCANNER_HOME = tool 'sonarqube-scanner-6-10'
+        SONAR_TOKEN = credentials('sonar-auth-token')
     }
 
     options {
@@ -74,34 +70,16 @@ pipeline {
 
         stage('SonarQube') {
             steps {
-                    sh 'echo $SONAR_SCANNER_HOME '
-                    sh '''
-                        $SONAR_SCANNER_HOME/bin/sonar-scanner \
-                            -Dsonar.projectKey=Solar-System-Project \
-                            -Dsonar.sources=app.js \
-                            -Dsonar.host.url=http://20.55.48.167:9000 \
-                            -Dsonar.login=qa_272c26492292ef1a9322e079c39d7b0924a3c749
-                            // -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
-                    '''
-                    // waitForQualityGate abortPipeline:true    
+                sh '''
+                    $SONAR_SCANNER_HOME/bin/sonar-scanner \
+                        -Dsonar.projectKey=Solar-System-Project \
+                        -Dsonar.sources=app.js \
+                        -Dsonar.host.url=http://20.55.48.167:9000 \
+                        -Dsonar.login=$SONAR_TOKEN \
+                        -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+                '''
             }
         }
-        // stage('Install Sonar Scanner') {
-        //     steps {
-        //         sh 'npm install -g @sonar/scan'
-        //     }
-        // }
-
-        // stage('SAST - SonarQube Scan') {
-        //     steps {
-        //         sh '''
-        //             npx sonar \
-        //               -Dsonar.host.url=http://20.55.48.167:9000 \
-        //               -Dsonar.login=$SONAR_TOKEN \
-        //               -Dsonar.projectKey=Solar-System-Project
-        //         '''
-        //     }
-        // }
     }
 
     post {
