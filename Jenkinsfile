@@ -40,6 +40,7 @@ pipeline {
                             --scan ./ \
                             --out ./ \
                             --format ALL \
+                            --disableYarnAudit \
                             --prettyPrint
                         ''', odcInstallation: 'OWASP-depcheck-12'
                         
@@ -70,14 +71,18 @@ pipeline {
 
         stage('SonarQube') {
             steps {
-                sh '''
-                    $SONAR_SCANNER_HOME/bin/sonar-scanner \
-                        -Dsonar.projectKey=Solar-System-Project \
-                        -Dsonar.sources=app.js \
-                        -Dsonar.host.url=http://20.55.48.167:9000 \
-                        -Dsonar.login=$SONAR_TOKEN \
-                        -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
-                '''
+                timeout(time: 60, unit: 'SECONDS') {
+                    withSonarQubeEnv('SonarQube Server') {
+                        sh 'echo $SONAR_SCANNER_HOME'
+                        sh '''
+                            $SONAR_SCANNER_HOME/bin/sonar-scanner \
+                                -Dsonar.projectKey=Solar-System-Project \
+                                -Dsonar.sources=app.js \
+                                -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
+                        '''
+                    }
+                    waitForQualityGate abortPipeline: true
+                }
             }
         }
     }
