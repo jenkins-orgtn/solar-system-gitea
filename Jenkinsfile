@@ -85,6 +85,12 @@ pipeline {
                 }
             }
         }
+        stage('Build Docker image') {
+            steps {
+                sh 'printenv'
+                sh 'docker build -t samarthdoc123/solar-system:$GIT_COMMIT' .
+            }
+        }
     }
 
     post {
