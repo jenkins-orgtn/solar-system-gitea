@@ -156,6 +156,7 @@ pipeline {
                                 fi
                                     sudo docker run --name solar-system \
                                         -p 3000:3000 -d samarthdoc123/solar-system:$GIT_COMMIT
+                            "    
                         '''
                     }
                 }
