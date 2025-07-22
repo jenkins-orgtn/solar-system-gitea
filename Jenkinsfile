@@ -138,6 +138,29 @@ pipeline {
                 }
             }
         }
+
+        stage('Deploy to AWS EC2') {
+            when {
+                branch 'test'
+            }
+
+            steps {
+                script {
+                    sshagent(['aws-dev-deploy-ec2-instance']) {
+                        sh '''
+                            ssh -o StrictHostKeyChecking=no ec2-user@100.27.20.54 "
+                                if sudo docker ps -a | grep -q "solar-system"; then
+                                    echo "Container found. Stopping ..."
+                                        sudo docker stop "solar-system" && sudo docker rm "solar-system"
+                                    echo "Container Stopped and removed."
+                                fi
+                                    sudo docker run --name solar-system \
+                                        -p 3000:3000 -d samarthdoc123/solar-system:$GIT_COMMIT
+                        '''
+                    }
+                }
+            }
+        }
     }
 
     post {
