@@ -88,7 +88,7 @@ pipeline {
         stage('Build Docker image') {
             steps {
                 sh 'printenv'
-                sh 'docker build -t samarthdoc123/solar-system:$GIT_COMMIT .'
+                sh 'docker build samarthdoc123/solar-system:$GIT_COMMIT .'
             }
         }
         stage('Trivy vul scanning') {
