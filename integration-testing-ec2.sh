@@ -5,7 +5,7 @@ aws --version
 
 Data=$(aws ec2 describe-instances)
 echo "Data "$Data
-URL=$(aws ec2 describe-instances jq-r. Reservations []. Instances [] | select(.Tags [].Value == "dev_deploy") |
+URL=$(aws ec2 describe-instances jq -r. Reservations []. Instances [] | select(.Tags [].Value == "dev_deploy") |
 echo "URL Data - "$URL
 
 if [[ "$URL" != '"]]; then
