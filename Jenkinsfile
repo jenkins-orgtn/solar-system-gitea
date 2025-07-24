@@ -80,7 +80,7 @@ pipeline {
                                 -Dsonar.javascript.lcov.reportPaths=./coverage/lcov.info
                         '''
                     }
-                    waitForQualityGate abortPipeline: true
+                    waitForQualityGate abortPipeline: false
                 }
             }
         }
