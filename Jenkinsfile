@@ -159,16 +159,17 @@ pipeline {
                 }
             }
         
-    stage('Integration Testing - aws ec2') {
-        when {
-            branch 'test'
-        }
-        steps {
-            sh 'printenv | grep -i branch'
-            withAWS(credentials: 'aws-s3-ec2-lambda-credentials', region: 'us-east-2') {
-                sh '''
-                    bash integration-testing-ec2.sh
-                '''
+        stage('Integration Testing - aws ec2') {
+            when {
+                branch 'test'
+            }
+            steps {
+                sh 'printenv | grep -i branch'
+                withAWS(credentials: 'aws-s3-ec2-lambda-credentials', region: 'us-east-2') {
+                    sh '''
+                        bash integration-testing-ec2.sh
+                    '''
+                }
             }
         }
     }
@@ -192,4 +193,3 @@ pipeline {
         }
     }
 }
-
