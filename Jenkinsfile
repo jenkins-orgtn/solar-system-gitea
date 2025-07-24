@@ -156,6 +156,7 @@ pipeline {
                     }
                 }
             }
+        }
         
         stage('Integration Testing - aws ec2') {
             when {
