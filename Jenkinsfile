@@ -61,11 +61,10 @@ pipeline {
         }
 
         stage('Code Coverage') {
-
             steps {
-                    catchError(buildResult: 'SUCCESS', message: 'Don\'t worry it will be fixed in future releases', stageResult: 'UNSTABLE') {
-                        sh 'npm run coverage'
-                    }
+                catchError(buildResult: 'SUCCESS', message: 'Don\'t worry it will be fixed in future releases', stageResult: 'UNSTABLE') {
+                    sh 'npm run coverage'
+                }
             }
         }
 
@@ -140,7 +139,6 @@ pipeline {
         }
 
         stage('Deploy to AWS EC2') {
-
             steps {
                 script {
                     sshagent(['aws-dev-deploy-ec2-instance']) {
